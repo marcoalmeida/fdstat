@@ -76,7 +76,7 @@ void parse_args(int argc, char *argv[], struct arguments *arguments)
 	{ "verbose", 'v', 0, 0, "Produce verbose output" },
 	{ "json", 'j', 0, 0, "Produce JSON output" },
 	{ "cmdline", 'c', 0, 0, "Output the command line instead of the PID" },
-	{ "summary", 's', 0, 0, "Display only totals (maximum)" },
+	{ "summary", 's', 0, 0, "Display only totals (allocated and maximum)" },
 	{ 0 }
     };
     /* argp parser. */

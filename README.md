@@ -13,7 +13,7 @@ Options:
 
   -j, --json                 Produce JSON output
 
-  -s, --summary              Display only totals (maximum)
+  -s, --summary              Display only totals (allocated and maximum)
 
   -v, --verbose              Produce verbose output
 
