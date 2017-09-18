@@ -97,11 +97,13 @@ int proc_cmdline(int pid, char *buf, int size)
     if (sprintf(path, "/proc/%d/cmdline", pid) < 0)
 	suicide("creating /proc/<pid>/cmdline path");
 
-    if (! (fp=fopen(path, "r")))
-	suicide(path);
-    if (!fread(buf, 1, size, fp) || ferror(fp))
-	success = 0;
-    fclose(fp);
+    /* some processes are very short-lived; just ignore it in case it
+     * happens to disappear */
+    if ((fp=fopen(path, "r"))) {
+	if (!fread(buf, 1, size, fp) || ferror(fp))
+	    success = 0;
+	fclose(fp);
+    }
 
     return success;
 }
