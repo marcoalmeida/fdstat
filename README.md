@@ -35,6 +35,6 @@ The `INTERVAL` parameter specifies the amount of time in seconds between each  r
 The  `COUNT` parameter can be specified in conjunction with the `INTERVAL` parameter. If
 the `COUNT` parameter is specified, the  value  of `COUNT`  determines  the  number  of
 reports  generated at `INTERVAL` seconds apart. If the `INTERVAL` parameter is specified
-without the `COUNT` parameter, the *fdstat* command generates reports continuously.
+without the `COUNT` parameter, the **fdstat** command generates reports continuously.
 
 Report bugs to <marcoafalmeida@gmail.com>.
