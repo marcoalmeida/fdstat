@@ -10,8 +10,8 @@
   1.
   1.
 
-## Specifications
+## System information
 
   - Version:
-  - Platform:
-  - Subsystem:
+  <!-- optional -->
+  - Other:
