@@ -49,9 +49,9 @@ int sys_value(const char *path)
     FILE *fp;
 
     if (! (fp=fopen(path, "r")))
-	suicide(path);
+        suicide(path);
     if ((fread(buf, 1, MAX_BUF_SIZE-1, fp) > 0) && (! ferror(fp)))
-	value = atoi(buf);
+        value = atoi(buf);
     fclose(fp);
 
     return value;
@@ -74,14 +74,14 @@ int allocated_fd()
     FILE *fp;
 
     if (! (fp=fopen("/proc/sys/fs/file-nr", "r")))
-	suicide("opening /proc/sys/fs/file-nr");
+        suicide("opening /proc/sys/fs/file-nr");
     if (fread(buf, 1, MAX_BUF_SIZE, fp) && (!ferror(fp))) {
-	/* this file contains 3 integers: allocated, unused, maxiumum;
-	 * we want the first */
-	if ((delim=index(buf, '\t'))) {
-	    *delim = 0;
-	    return atoi(buf);
-	}
+        /* this file contains 3 integers: allocated, unused, maxiumum;
+         * we want the first */
+        if ((delim=index(buf, '\t'))) {
+            *delim = 0;
+            return atoi(buf);
+        }
     }
     fclose(fp);
 
@@ -95,14 +95,14 @@ int proc_cmdline(int pid, char *buf, int size)
     FILE *fp;
 
     if (sprintf(path, "/proc/%d/cmdline", pid) < 0)
-	suicide("creating /proc/<pid>/cmdline path");
+        suicide("creating /proc/<pid>/cmdline path");
 
     /* some processes are very short-lived; just ignore it in case it
      * happens to disappear */
     if ((fp=fopen(path, "r"))) {
-	if (!fread(buf, 1, size, fp) || ferror(fp))
-	    success = 0;
-	fclose(fp);
+        if (!fread(buf, 1, size, fp) || ferror(fp))
+            success = 0;
+        fclose(fp);
     }
 
     return success;

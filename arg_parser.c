@@ -39,26 +39,26 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state)
     switch (key)
     {
     case 'v':
-	arguments->verbose = 1;
-	break;
+        arguments->verbose = 1;
+        break;
     case 'j':
-	arguments->json = 1;
-	break;
+        arguments->json = 1;
+        break;
     case 'c':
-	arguments->cmdline = 1;
-	break;
+        arguments->cmdline = 1;
+        break;
     case 's':
-	arguments->summary = 1;
-	break;
+        arguments->summary = 1;
+        break;
     case ARGP_KEY_ARG:
-	if (state->arg_num >= 2)
-	    /* too many arguments */
-	    argp_usage (state);
-	arguments->args[state->arg_num] = atoi(arg);
-	arguments->n_args++;
-	break;
+        if (state->arg_num >= 2)
+            /* too many arguments */
+            argp_usage (state);
+        arguments->args[state->arg_num] = atoi(arg);
+        arguments->n_args++;
+        break;
     default:
-	return ARGP_ERR_UNKNOWN;
+        return ARGP_ERR_UNKNOWN;
     }
 
     return 0;
@@ -73,11 +73,11 @@ void parse_args(int argc, char *argv[], struct arguments *arguments)
     static char args_doc[] = "INTERVAL COUNT";
     /* all options we accept */
     static struct argp_option options[] = {
-	{ "verbose", 'v', 0, 0, "Produce verbose output" },
-	{ "json", 'j', 0, 0, "Produce JSON output" },
-	{ "cmdline", 'c', 0, 0, "Output the command line instead of the PID" },
-	{ "summary", 's', 0, 0, "Display only totals (allocated and maximum)" },
-	{ 0 }
+        { "verbose", 'v', 0, 0, "Produce verbose output" },
+        { "json", 'j', 0, 0, "Produce JSON output" },
+        { "cmdline", 'c', 0, 0, "Output the command line instead of the PID" },
+        { "summary", 's', 0, 0, "Display only totals (allocated and maximum)" },
+        { 0 }
     };
     /* argp parser. */
     static struct argp argp = { options, parse_opt, args_doc, doc };
