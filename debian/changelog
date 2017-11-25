@@ -1,3 +1,10 @@
+fdstat (0.1.1-1) unstable; urgency=medium
+
+  * Fix summary mode
+  * Untabify
+
+ -- Marco Almeida <marcoafalmeida@gmail.com>  Sat, 25 Nov 2017 03:00:43 -0800
+
 fdstat (0.1.0-1) unstable; urgency=medium
 
   * Initial release
