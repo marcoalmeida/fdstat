@@ -1,4 +1,4 @@
-CC = gcc
+CC = clang
 CFLAGS = -Wall -pedantic -std=c99
 
 OBJECTS = $(filter-out main.o,$(patsubst %.c,%.o,$(wildcard *.c)))
@@ -21,3 +21,7 @@ $(BIN): main.c $(OBJECTS)
 
 clean:
 	rm -fr $(BIN) *.o
+
+.PHONY: debian
+debian:
+	dpkg-buildpackage -b -uc -us
