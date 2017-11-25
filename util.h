@@ -20,7 +20,7 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
-#define MAX_PATH 32
+#define MAX_PATH 320
 #define MAX_CMDLINE 8072 /* arbitrary but large enough (?) */
 #define MAX_BUF_SIZE 32
 
