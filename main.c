@@ -41,16 +41,16 @@ int count_fds(const char *pid)
     struct dirent *entry;
 
     if (sprintf(path, "/proc/%s/fd", pid) < 0)
-	suicide("creating /proc/<pid>/fd path");
+        suicide("creating /proc/<pid>/fd path");
 
     dp = opendir(path);
     /* some processes are very short-lived; just ignore it in case it
      * happens to disappear */
     if (dp) {
-	while((entry=readdir(dp))) {
-	    if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, ".."))
-		count++;
-	}
+        while((entry=readdir(dp))) {
+            if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, ".."))
+                count++;
+        }
     }
     closedir(dp);
 
@@ -70,8 +70,8 @@ void count_proc_fds(int *procs)
     while((entry=readdir(dp))) {
         stat(entry->d_name, &statbuf);
         if(S_ISDIR(statbuf.st_mode)) {
-	    if (is_integer(entry->d_name)) {
-		procs[atoi(entry->d_name)] = count_fds(entry->d_name);
+            if (is_integer(entry->d_name)) {
+                procs[atoi(entry->d_name)] = count_fds(entry->d_name);
             }
         }
     }
@@ -91,33 +91,33 @@ void print(int *proc_fds, int n_procs, int json, int cmdline)
 
     printf(begin, "");
     for (pid = 1; pid < n_procs; pid++) {
-	/* ignore processes with no open files */
-	if (proc_fds[pid]) {
-	    /* avoid a trailing comma -- we don't know when the last
-	     * line will be printed, so keep track of the first one
-	     * and prepend commas instead of appending */
-	    if (json && i_printed)
-		printf(",");
-	    if (cmdline) {
-		if (proc_cmdline(pid, cmdline_buf, MAX_CMDLINE))
-		    printf(cmdline_fmt, cmdline_buf, proc_fds[pid]);
-		else
-		    fprintf(stderr, "Failed to get cmdline for pid %d\n", pid);
-	    }
-	    else
-		printf(pid_fmt, pid, proc_fds[pid]);
-	    i_printed = 1;
-	}
+        /* ignore processes with no open files */
+        if (proc_fds[pid]) {
+            /* avoid a trailing comma -- we don't know when the last
+                 * line will be printed, so keep track of the first one
+                 * and prepend commas instead of appending */
+            if (json && i_printed)
+                printf(",");
+            if (cmdline) {
+                if (proc_cmdline(pid, cmdline_buf, MAX_CMDLINE))
+                    printf(cmdline_fmt, cmdline_buf, proc_fds[pid]);
+                else
+                    fprintf(stderr, "Failed to get cmdline for pid %d\n", pid);
+            }
+            else
+                printf(pid_fmt, pid, proc_fds[pid]);
+            i_printed = 1;
+        }
     }
     printf(end, "");
 }
 
 void print_summary(int allocated, int total, int json) {
     if (json)
-	printf("{\"allocated\": %d, \"total\": %d}\n", allocated, total);
+        printf("{\"allocated\": %d, \"total\": %d}\n", allocated, total);
     else {
-	printf("Allocated\tTotal\n");
-	printf("%d\t\t%d\n", allocated, total);
+        printf("Allocated\tMaximum available\n");
+        printf("%d\t\t%d\n", allocated, total);
     }
 }
 
@@ -136,29 +136,30 @@ int main(int argc, char *argv[])
     /* allocate the array to store the number of open file descriptors
      * per process */
     if (! (proc_fds=(int *)calloc(n_procs, sizeof(int))))
-	suicide("allocating process table");
+        suicide("allocating process table");
 
     while (1) {
-	if (arguments.summary) {
-	    print_summary(allocated_fd(), max_fd(), arguments.json);
-	}
-	else {
-	    /* reset the process array */
-	    memset(proc_fds, 0, n_procs*sizeof(int));
-	    /* collect/count the number of file descriptors per process */
-	    count_proc_fds(proc_fds);
-	    /* print out the results */
-	    print(proc_fds, n_procs, arguments.json, arguments.cmdline);
-	}
+        if (arguments.summary) {
+            print_summary(allocated_fd(), max_fd(), arguments.json);
+            break;
+        }
+        else {
+            /* reset the process array */
+            memset(proc_fds, 0, n_procs*sizeof(int));
+            /* collect/count the number of file descriptors per process */
+            count_proc_fds(proc_fds);
+            /* print out the results */
+            print(proc_fds, n_procs, arguments.json, arguments.cmdline);
+        }
 
-	/* if a COUNT was set, make sure we stop after those many */
-	if (arguments.n_args == 2) {
-	    if (arguments.args[1]-- == 1)
-		break;
-	}
-	/* if an INTERVAL was set, sleep for that period of time */
-	if (arguments.n_args > 0)
-	    sleep(arguments.args[0]);
+        /* if a COUNT was set, make sure we stop after those many */
+        if (arguments.n_args == 2) {
+            if (arguments.args[1]-- == 1)
+                break;
+        }
+        /* if an INTERVAL was set, sleep for that period of time */
+        if (arguments.n_args > 0)
+            sleep(arguments.args[0]);
     }
 
     /* release memory allocated for */
