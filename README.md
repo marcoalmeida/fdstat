@@ -10,7 +10,29 @@ socket).
 Each report provides information gathered at the time of execution.
 
 
-# Usage
+## Installation
+
+### Debian package
+* Download the Debian package from the latest release 
+[here](https://github.com/marcoalmeida/fdstat/releases)
+* Run 
+  
+  `sudo dpkg -i fdstat_<version>_amd64.deb`
+ 
+### From source
+* Download the tarball with the source code from the latest
+release [here](https://github.com/marcoalmeida/fdstat/releases)
+* Extract the tarball
+* Change to the directory containing the source code:
+  
+  `cd fdstat-<version>`
+  
+* Run
+
+  `make && sudo make install`
+
+
+## Usage
 
 Usage: `fdstat [OPTION...] [INTERVAL [COUNT]]`
 
@@ -36,5 +58,25 @@ The  `COUNT` parameter can be specified in conjunction with the `INTERVAL` param
 the `COUNT` parameter is specified, the  value  of `COUNT`  determines  the  number  of
 reports  generated at `INTERVAL` seconds apart. If the `INTERVAL` parameter is specified
 without the `COUNT` parameter, the **fdstat** command generates reports continuously.
+
+## Examples
+* List of number of currently open files and corresponding PID
+
+  `fdstat`
+
+* Continuously list of number of currently open files and corresponding PID,
+generating a new report every 3 seconds
+
+  `fdstat 3`
+
+* Print three reports, five seconds apart, on open files and corresponding 
+command line 
+
+  `fdstat 5 3 -c`
+
+* Show the full command line, sort the results in descending order (process 
+with highest number of open files last) 
+
+  `fdstat -c | sort -k1 -n`
 
 Report bugs to <marcoafalmeida@gmail.com>.
