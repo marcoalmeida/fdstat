@@ -25,7 +25,7 @@
 
 /* put the given documentation string and bug address in the ‘--help’
  * output, as per GNU standards */
-const char *argp_program_version = "fdstat 0.1";
+const char *argp_program_version = "fdstat 0.2";
 const char *argp_program_bug_address = "<marcoafalmeida@gmail.com>";
 
 

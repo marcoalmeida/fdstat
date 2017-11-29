@@ -1,3 +1,12 @@
+fdstat (0.2.0-1) unstable; urgency=medium
+
+  * Change output format
+  * Install/uninstall targets on the Makefile
+  * Issue template
+  * Pull request template
+
+ -- Marco Almeida <marcoafalmeida@gmail.com>  Wed, 29 Nov 2017 00:09:14 -0800
+
 fdstat (0.1.1-1) unstable; urgency=medium
 
   * Fix summary mode
