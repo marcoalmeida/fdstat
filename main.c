@@ -84,28 +84,38 @@ void print(int *proc_fds, int n_procs, int json, int cmdline)
     int pid;
     int i_printed = 0;
     char cmdline_buf[MAX_CMDLINE];
-    char *begin = json ? "{" : "PID\tFDs\n";
+    char *begin = json ? "{" : "#FDs\tPID\n";
     char *end = json ? "}\n" : "\n";
     char *pid_fmt = json ? "\"%d\": %d" : "%d\t%d\n";
-    char *cmdline_fmt = json ? "\"%s\": %d" : "%s\t%d\n";
+    char *cmdline_fmt = json ? "\"%s\": %d" : "%d\t%s\n";
 
     printf(begin, "");
     for (pid = 1; pid < n_procs; pid++) {
         /* ignore processes with no open files */
         if (proc_fds[pid]) {
             /* avoid a trailing comma -- we don't know when the last
-                 * line will be printed, so keep track of the first one
-                 * and prepend commas instead of appending */
+             * line will be printed, so keep track of the first one
+             * and prepend commas instead of appending */
             if (json && i_printed)
-                printf(",");
+                printf(", ");
             if (cmdline) {
-                if (proc_cmdline(pid, cmdline_buf, MAX_CMDLINE))
-                    printf(cmdline_fmt, cmdline_buf, proc_fds[pid]);
+                if (proc_cmdline(pid, cmdline_buf, MAX_CMDLINE)) {
+                    /* if JSON, we want the key to be the cmd line */
+                    if (json)
+                        printf(cmdline_fmt, cmdline_buf, proc_fds[pid]);
+                    else
+                        printf(cmdline_fmt, proc_fds[pid], cmdline_buf);
+                }
                 else
                     fprintf(stderr, "Failed to get cmdline for pid %d\n", pid);
             }
-            else
-                printf(pid_fmt, pid, proc_fds[pid]);
+            else {
+                /* if JSON, we want the key to be the PID */
+                if (json)
+                    printf(pid_fmt, pid, proc_fds[pid]);
+                else
+                    printf(pid_fmt, proc_fds[pid], pid);
+            }
             i_printed = 1;
         }
     }
@@ -160,6 +170,9 @@ int main(int argc, char *argv[])
         /* if an INTERVAL was set, sleep for that period of time */
         if (arguments.n_args > 0)
             sleep(arguments.args[0]);
+        /* if neither COUNT nor INTERVAL are set, run just once */
+        if (arguments.n_args == 0)
+            break;
     }
 
     /* release memory allocated for */
